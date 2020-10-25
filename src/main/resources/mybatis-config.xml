@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration
+        PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+
+    <!--定义实体类的别名，否则之后需要使用全限定类型-->
+<!--    <typeAliases>
+        <typeAlias type="com.ssm.demo.model.Book" alias="Book"/>
+    </typeAliases>-->
+
+    <!--分页插件-->
+    <plugins>
+        <plugin interceptor="com.github.pagehelper.PageInterceptor">
+            <property name="helperDialect" value="mysql"/>
+            <property name="PageSizeZero" value="true"/>
+        </plugin>
+    </plugins>
+
+    <!--mapper文件映射-->
+    <mappers>
+        <mapper resource="mapper/SysUserDao.xml"/>
+        <mapper resource="mapper/BizCategoryDao.xml"/>
+        <mapper resource="mapper/BizSupplierDao.xml"/>
+        <mapper resource="mapper/BizProductDao.xml"/>
+        <mapper resource="mapper/BizStockDao.xml"/>
+        <mapper resource="mapper/BizStockModifyRecordDao.xml"/>
+        <mapper resource="mapper/BizSaleDao.xml"/>
+        <mapper resource="mapper/BizPurchaseDao.xml"/>
+        <mapper resource="mapper/SysUserDao.xml"/>
+    </mappers>
+</configuration>

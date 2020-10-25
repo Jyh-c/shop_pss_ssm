@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.pss.demo.dao.BizPurchaseDao">
+  <resultMap id="BaseResultMap" type="com.pss.demo.model.BizPurchase">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="product_barcode" jdbcType="VARCHAR" property="productBarcode" />
+
+    <result column="bar_code" jdbcType="VARCHAR" property="productBarcode" />
+    <result column="supplier_name" jdbcType="VARCHAR" property="bizSupplier.supplierName" />
+    <result column="category_name" jdbcType="VARCHAR" property="bizCategory.categoryName" />
+    <result column="product_name" jdbcType="VARCHAR" property="bizProduct.productName" />
+
+    <result column="purchase_date" jdbcType="VARCHAR" property="purchaseDate" />
+    <result column="pro_date" jdbcType="VARCHAR" property="proDate" />
+    <result column="exp_date" jdbcType="VARCHAR" property="expDate" />
+    <result column="purchase_price" jdbcType="DECIMAL" property="purchasePrice" />
+    <result column="count" jdbcType="INTEGER" property="count" />
+    <result column="amount" jdbcType="DECIMAL" property="amount" />
+    <result column="receipt_img" jdbcType="VARCHAR" property="receiptImg" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+    <result column="deleted" jdbcType="BIT" property="deleted" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, product_barcode, purchase_date, pro_date, exp_date, purchase_price, `count`, 
+    amount, receipt_img, create_time, update_time, deleted
+  </sql>
+  <select id="selectAll" resultMap="BaseResultMap" parameterType="String">
+    SELECT
+    biz_purchase.id,
+    biz_supplier.supplier_name,
+    biz_product.bar_code,
+    biz_category.category_name,
+    biz_product.product_name ,
+    biz_purchase.purchase_price,
+    biz_purchase.count,
+    biz_purchase.amount,
+    biz_purchase.exp_date
+    FROM
+    (biz_purchase ,biz_supplier )
+    INNER JOIN biz_product ON biz_product.supplier_id = biz_supplier.id AND biz_purchase.product_barcode = biz_product.bar_code
+    INNER JOIN biz_category ON biz_product.category_id = biz_category.id
+    where biz_product.deleted = 0 and biz_supplier.deleted = 0 and biz_category.deleted = 0 and biz_purchase.deleted=0 and biz_product.product_name like '%${keyword}%'
+  </select>
+
+  <insert id="insert" keyColumn="id" keyProperty="id" parameterType="com.pss.demo.model.BizPurchase" useGeneratedKeys="true">
+    insert into biz_purchase (product_barcode, purchase_date, pro_date, 
+      exp_date, purchase_price, `count`, 
+      amount, receipt_img, create_time, 
+      update_time, deleted)
+    values (#{productBarcode,jdbcType=VARCHAR}, #{purchaseDate,jdbcType=VARCHAR}, #{proDate,jdbcType=VARCHAR}, 
+      #{expDate,jdbcType=VARCHAR}, #{purchasePrice,jdbcType=DECIMAL}, #{count,jdbcType=INTEGER}, 
+      #{amount,jdbcType=DECIMAL}, #{receiptImg,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, 
+      #{updateTime,jdbcType=TIMESTAMP}, #{deleted,jdbcType=BIT})
+  </insert>
+  <insert id="insertSelective" keyColumn="id" keyProperty="id" parameterType="com.pss.demo.model.BizPurchase" useGeneratedKeys="true">
+    insert into biz_purchase
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="productBarcode != null">
+        product_barcode,
+      </if>
+      <if test="purchaseDate != null">
+        purchase_date,
+      </if>
+      <if test="proDate != null">
+        pro_date,
+      </if>
+      <if test="expDate != null">
+        exp_date,
+      </if>
+      <if test="purchasePrice != null">
+        purchase_price,
+      </if>
+      <if test="count != null">
+        `count`,
+      </if>
+      <if test="amount != null">
+        amount,
+      </if>
+      <if test="receiptImg != null">
+        receipt_img,
+      </if>
+      <if test="createTime != null">
+        create_time,
+      </if>
+      <if test="updateTime != null">
+        update_time,
+      </if>
+      <if test="deleted != null">
+        deleted,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="productBarcode != null">
+        #{productBarcode,jdbcType=VARCHAR},
+      </if>
+      <if test="purchaseDate != null">
+        #{purchaseDate,jdbcType=VARCHAR},
+      </if>
+      <if test="proDate != null">
+        #{proDate,jdbcType=VARCHAR},
+      </if>
+      <if test="expDate != null">
+        #{expDate,jdbcType=VARCHAR},
+      </if>
+      <if test="purchasePrice != null">
+        #{purchasePrice,jdbcType=DECIMAL},
+      </if>
+      <if test="count != null">
+        #{count,jdbcType=INTEGER},
+      </if>
+      <if test="amount != null">
+        #{amount,jdbcType=DECIMAL},
+      </if>
+      <if test="receiptImg != null">
+        #{receiptImg,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null">
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="deleted != null">
+        #{deleted,jdbcType=BIT},
+      </if>
+    </trim>
+  </insert>
+</mapper>

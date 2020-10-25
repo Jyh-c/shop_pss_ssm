@@ -1,0 +1,140 @@
+biz_purchase进货表
+id: 编号
+product_id: 产品id
+purchase_date: 进货日期
+pro_date: 生产日期？？
+exp_date: 保质期？？
+purchase_price: 进货价格
+count: 数量
+amount: 进货金额
+receipt_img: 收据图片？？
+create_time: 创建时间
+update_time: 更改时间
+deleted: 是否删除
+
+biz_product产品表
+id: 产品编号
+bar_code: 商品条码？？
+supplier_id: 供应商编号
+category_id: 类别编号
+product_name: 商品名称
+sale_price: 销售价格
+create_time: 创建时间
+update_time: 更改时间
+deleted: 是否删除
+
+biz_category类别表
+id: 类别编号
+category_name: 类别名称
+create_time: 创建时间
+update_time: 更改时间
+deleted: 是否删除
+
+biz_supplier供应商表
+id: i供应商编号
+supplier_name: 供应商名称
+contacts_name: 联系人
+tel: 电话
+address: 地址
+create_time: 创建时间
+update_time: 更改时间
+deleted: 是否删除
+
+biz_product_sepc_map
+id: 编号
+product_id: 产品编号
+sepc_id: int
+create_time: 创建时间
+update_time: 更改时间
+deleted: 是否删除
+
+biz_spec
+id: int
+spec_name: varchar(100)
+spec_val: varchar(500)
+create_time: 创建时间
+update_time: 更改时间
+deleted: 是否删除
+
+biz_stock_modify_record库存修改记录表
+product_bar_code: 操作员编号
+operator_id: 操作员编号
+modify_count: 修改（次）数？？？
+modify_type: 修改类型
+create_time: 创建时间
+update_time: 更改时间
+deleted: 是否删除
+id: 修改记录编号
+
+
+sys_user用户表
+id: 用户编号
+role_id: 角色编号
+user_name: 用户名
+login_account: 登录账户
+password: 密码
+tel: 电话
+wx_account: 微信
+id_no: varchar(18)
+address: 地址
+create_time: 创建时间
+update_time: 更改时间
+deleted: 是否删除
+
+sys_role角色表
+id: 角色编号
+role_name: 角色名称
+create_time: 创建时间
+update_time: 更改时间
+deleted: 是否删除
+
+sys_role_menu_map角色菜单表
+id: 角色菜单编号
+role_id: 角色编号
+menu_id: 菜单编号
+create_time: 创建时间
+update_time: 更改时间
+deleted: 是否删除
+
+sys_menu菜单表
+id: 菜单编号
+menu_name: 菜单名称
+url: URL地址
+node_code: 节点代码？？？？
+parent_code: varchar(2...
+node_order: int
+create_time: 创建时间
+update_time: 更改时间
+deleted: 是否删除
+
+biz_marchant商家表
+id: 商家编号
+merchant_name: 商家名称
+tel: 电话
+address: 地址
+create_time: 创建时间
+update_time: 更改时间
+deleted: 是否删除
+
+biz_sale销售表
+id: 销售编号
+product_bar_code:  商品条形码
+sale_price: 销售价格
+sale_date: 销售日期
+sale_count: 销售数量
+sale_amount: 销售金额？？？
+gross_profit: 销售利润？？？
+create_time: 创建时间
+update_time: 更改时间
+deleted: 是否删除
+
+biz_stock库存表
+product_bar_code: 商品条形码
+stock_count: 库存数量
+create_time: 创建时间
+update_time: 更改时间
+deleted: 是否删除
+lock_key: 锁
+
+
+INSERT INTO biz_product values (?,?,?,?,?,?,?,?)

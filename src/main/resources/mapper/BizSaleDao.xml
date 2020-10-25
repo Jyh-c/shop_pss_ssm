@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.pss.demo.dao.BizSaleDao">
+  <resultMap id="BaseResultMap" type="com.pss.demo.model.BizSale">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="product_bar_code" jdbcType="VARCHAR" property="productBarCode" />
+    <result column="product_name" jdbcType="VARCHAR" property="bizProduct.productName" />
+    <result column="sale_price" jdbcType="DECIMAL" property="salePrice" />
+    <result column="sale_date" jdbcType="VARCHAR" property="saleDate" />
+    <result column="sale_count" jdbcType="INTEGER" property="saleCount" />
+    <result column="sale_amount" jdbcType="DECIMAL" property="saleAmount" />
+    <result column="gross_profit" jdbcType="DECIMAL" property="grossProfit" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+    <result column="deleted" jdbcType="BIT" property="deleted" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, product_bar_code, sale_price, sale_date, sale_count, sale_amount, gross_profit, 
+    create_time, update_time, deleted
+  </sql>
+  <select id="selectAll" resultMap="BaseResultMap" parameterType="String">
+    SELECT
+    biz_sale.product_bar_code,
+    biz_product.product_name,
+    biz_sale.sale_price,
+    biz_sale.sale_count,
+    biz_sale.sale_amount,
+    biz_sale.create_time
+    FROM
+    biz_sale ,
+    biz_product
+    where biz_sale.product_bar_code = biz_product.bar_code and
+    biz_product.deleted = 0 and biz_sale.deleted = 0 and biz_product.product_name like '%${keyword}%'
+  </select>
+  <insert id="insert" keyColumn="id" keyProperty="id" parameterType="com.pss.demo.model.BizSale" useGeneratedKeys="true">
+    insert into biz_sale (product_bar_code, sale_price, sale_date, 
+      sale_count, sale_amount, gross_profit, 
+      create_time, update_time, deleted
+      )
+    values (#{productBarCode,jdbcType=VARCHAR}, #{salePrice,jdbcType=DECIMAL}, #{saleDate,jdbcType=VARCHAR}, 
+      #{saleCount,jdbcType=INTEGER}, #{saleAmount,jdbcType=DECIMAL}, #{grossProfit,jdbcType=DECIMAL}, 
+      #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}, #{deleted,jdbcType=BIT}
+      )
+  </insert>
+  <insert id="insertSelective" keyColumn="id" keyProperty="id" parameterType="com.pss.demo.model.BizSale" useGeneratedKeys="true">
+    insert into biz_sale
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="productBarCode != null">
+        product_bar_code,
+      </if>
+      <if test="salePrice != null">
+        sale_price,
+      </if>
+      <if test="saleDate != null">
+        sale_date,
+      </if>
+      <if test="saleCount != null">
+        sale_count,
+      </if>
+      <if test="saleAmount != null">
+        sale_amount,
+      </if>
+      <if test="grossProfit != null">
+        gross_profit,
+      </if>
+      <if test="createTime != null">
+        create_time,
+      </if>
+      <if test="updateTime != null">
+        update_time,
+      </if>
+      <if test="deleted != null">
+        deleted,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="productBarCode != null">
+        #{productBarCode,jdbcType=VARCHAR},
+      </if>
+      <if test="salePrice != null">
+        #{salePrice,jdbcType=DECIMAL},
+      </if>
+      <if test="saleDate != null">
+        #{saleDate,jdbcType=VARCHAR},
+      </if>
+      <if test="saleCount != null">
+        #{saleCount,jdbcType=INTEGER},
+      </if>
+      <if test="saleAmount != null">
+        #{saleAmount,jdbcType=DECIMAL},
+      </if>
+      <if test="grossProfit != null">
+        #{grossProfit,jdbcType=DECIMAL},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null">
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="deleted != null">
+        #{deleted,jdbcType=BIT},
+      </if>
+    </trim>
+  </insert>
+</mapper>

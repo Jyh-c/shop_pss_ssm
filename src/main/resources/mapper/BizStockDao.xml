@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.pss.demo.dao.BizStockDao">
+  <resultMap id="BaseResultMap" type="com.pss.demo.model.BizStock">
+    <id column="product_bar_code" jdbcType="VARCHAR" property="productBarCode" />
+    <result column="category_name" jdbcType="VARCHAR" property="bizCategory.categoryName" />
+    <result column="product_name" jdbcType="VARCHAR" property="bizProduct.productName" />
+    <result column="stock_count" jdbcType="INTEGER" property="stockCount" />
+    <result column="supplier_name" jdbcType="VARCHAR" property="bizSupplier.supplierName" />
+    <result column="contacts_name" jdbcType="VARCHAR" property="bizSupplier.contactsName" />
+    <result column="tel" jdbcType="VARCHAR" property="bizSupplier.tel" />
+    <result column="lock_key" jdbcType="VARCHAR" property="lockKey" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+    <result column="deleted" jdbcType="BIT" property="deleted" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    product_bar_code, stock_count, lock_key, create_time, update_time, deleted
+  </sql>
+  <select id="selectAll" resultMap="BaseResultMap" parameterType="String">
+    SELECT
+    biz_stock.product_bar_code,
+    biz_category.category_name,
+    biz_product.product_name,
+    biz_stock.stock_count,
+    biz_supplier.supplier_name,
+    biz_supplier.contacts_name,
+    biz_supplier.tel
+    FROM
+    (biz_stock ,
+    biz_category)
+    INNER JOIN biz_product ON biz_product.category_id = biz_category.id
+    INNER JOIN biz_supplier ON biz_product.supplier_id = biz_supplier.id
+    where biz_stock.product_bar_code = biz_product.bar_code and
+    product_name like '%${keyword}%' and biz_stock.deleted = 0 and biz_category.deleted = 0 and biz_product.deleted = 0 and biz_supplier.deleted = 0
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from biz_stock
+    where product_bar_code = #{productBarCode,jdbcType=VARCHAR}
+  </select>
+  <insert id="insert" keyColumn="product_bar_code" keyProperty="productBarCode" parameterType="com.pss.demo.model.BizStock" useGeneratedKeys="true">
+    insert into biz_stock (stock_count, lock_key, create_time, 
+      update_time, deleted)
+    values (#{stockCount,jdbcType=INTEGER}, #{lockKey,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, 
+      #{updateTime,jdbcType=TIMESTAMP}, #{deleted,jdbcType=BIT})
+  </insert>
+  <insert id="insertSelective" keyColumn="product_bar_code" keyProperty="productBarCode" parameterType="com.pss.demo.model.BizStock" useGeneratedKeys="true">
+    insert into biz_stock
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="productBarCode != null">
+        product_bar_code,
+      </if>
+      <if test="stockCount != null">
+        stock_count,
+      </if>
+      <if test="lockKey != null">
+        lock_key,
+      </if>
+      <if test="createTime != null">
+        create_time,
+      </if>
+      <if test="updateTime != null">
+        update_time,
+      </if>
+      <if test="deleted != null">
+        deleted,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="productBarCode != null">
+        #{productBarCode,jdbcType=VARCHAR},
+      </if>
+      <if test="stockCount != null">
+        #{stockCount,jdbcType=INTEGER},
+      </if>
+      <if test="lockKey != null">
+        #{lockKey,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null">
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="deleted != null">
+        #{deleted,jdbcType=BIT},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.pss.demo.model.BizStock">
+    update biz_stock
+    <set>
+      <if test="stockCount != null">
+        stock_count = #{stockCount,jdbcType=INTEGER},
+      </if>
+      <if test="lockKey != null">
+        lock_key = #{lockKey,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null">
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null">
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="deleted != null">
+        deleted = #{deleted,jdbcType=BIT},
+      </if>
+    </set>
+    where product_bar_code = #{productBarCode,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.pss.demo.model.BizStock">
+    update biz_stock
+    set stock_count = #{stockCount,jdbcType=INTEGER},
+      lock_key = #{lockKey,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      update_time = #{updateTime,jdbcType=TIMESTAMP},
+      deleted = #{deleted,jdbcType=BIT}
+    where product_bar_code = #{productBarCode,jdbcType=VARCHAR}
+  </update>
+
+</mapper>

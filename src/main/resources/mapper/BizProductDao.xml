@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.pss.demo.dao.BizProductDao">
+  <resultMap id="BaseResultMap" type="com.pss.demo.model.BizProduct">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="bar_code" jdbcType="VARCHAR" property="barCode" />
+    <result column="supplier_id" jdbcType="INTEGER" property="supplierId" />
+    <result column="supplier_name" jdbcType="VARCHAR" property="supplier.supplierName" />
+    <result column="category_id" jdbcType="INTEGER" property="categoryId" />
+    <result column="category_name" jdbcType="VARCHAR" property="category.categoryName" />
+    <result column="product_name" jdbcType="VARCHAR" property="productName" />
+    <result column="sale_price" jdbcType="DECIMAL" property="salePrice" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+    <result column="deleted" jdbcType="BIT" property="deleted" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, bar_code, supplier_id, category_id, product_name, sale_price, create_time, update_time,
+    deleted
+  </sql>
+  <select id="selectAll" resultMap="BaseResultMap" parameterType="String">
+    select p.id,p.bar_code,p.supplier_id,s.SUPPLIER_NAME,p.category_id,c.category_name,p.product_name,p.sale_price from biz_product p,biz_category c,biz_supplier s where p.category_id = c.id and p.supplier_id = s.id and p.product_name like '%${keyword}%' and p.deleted = 0 and c.deleted = 0 and s.deleted = 0
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from biz_product
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+
+  <select id="selectByBarCode" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from biz_product
+    where bar_code = #{bar_code,jdbcType=VARCHAR}
+  </select>
+
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from biz_product
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" keyColumn="id" keyProperty="id" parameterType="com.pss.demo.model.BizProduct" useGeneratedKeys="true">
+    insert into biz_product (bar_code, supplier_id, category_id, 
+      product_name, sale_price, create_time, 
+      update_time, deleted)
+    values (#{barCode,jdbcType=VARCHAR}, #{supplierId,jdbcType=INTEGER}, #{categoryId,jdbcType=INTEGER}, 
+      #{productName,jdbcType=VARCHAR}, #{salePrice,jdbcType=DECIMAL}, #{createTime,jdbcType=TIMESTAMP}, 
+      #{updateTime,jdbcType=TIMESTAMP}, #{deleted,jdbcType=BIT})
+  </insert>
+  <insert id="insertSelective" keyColumn="id" keyProperty="id" parameterType="com.pss.demo.model.BizProduct" useGeneratedKeys="true">
+    insert into biz_product
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="barCode != null">
+        bar_code,
+      </if>
+      <if test="supplierId != null">
+        supplier_id,
+      </if>
+      <if test="categoryId != null">
+        category_id,
+      </if>
+      <if test="productName != null">
+        product_name,
+      </if>
+      <if test="salePrice != null">
+        sale_price,
+      </if>
+      <if test="createTime != null">
+        create_time,
+      </if>
+      <if test="updateTime != null">
+        update_time,
+      </if>
+      <if test="deleted != null">
+        deleted,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="barCode != null">
+        #{barCode,jdbcType=VARCHAR},
+      </if>
+      <if test="supplierId != null">
+        #{supplierId,jdbcType=INTEGER},
+      </if>
+      <if test="categoryId != null">
+        #{categoryId,jdbcType=INTEGER},
+      </if>
+      <if test="productName != null">
+        #{productName,jdbcType=VARCHAR},
+      </if>
+      <if test="salePrice != null">
+        #{salePrice,jdbcType=DECIMAL},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null">
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="deleted != null">
+        #{deleted,jdbcType=BIT},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.pss.demo.model.BizProduct">
+    update biz_product
+    <set>
+      <if test="barCode != null">
+        bar_code = #{barCode,jdbcType=VARCHAR},
+      </if>
+      <if test="supplierId != null">
+        supplier_id = #{supplierId,jdbcType=INTEGER},
+      </if>
+      <if test="categoryId != null">
+        category_id = #{categoryId,jdbcType=INTEGER},
+      </if>
+      <if test="productName != null">
+        product_name = #{productName,jdbcType=VARCHAR},
+      </if>
+      <if test="salePrice != null">
+        sale_price = #{salePrice,jdbcType=DECIMAL},
+      </if>
+      <if test="createTime != null">
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null">
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="deleted != null">
+        deleted = #{deleted,jdbcType=BIT},
+      </if>
+    </set>
+    where bar_code = #{barCode,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.pss.demo.model.BizProduct">
+    update biz_product
+    set bar_code = #{barCode,jdbcType=VARCHAR},
+      supplier_id = #{supplierId,jdbcType=INTEGER},
+      category_id = #{categoryId,jdbcType=INTEGER},
+      product_name = #{productName,jdbcType=VARCHAR},
+      sale_price = #{salePrice,jdbcType=DECIMAL},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      update_time = #{updateTime,jdbcType=TIMESTAMP},
+      deleted = #{deleted,jdbcType=BIT}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

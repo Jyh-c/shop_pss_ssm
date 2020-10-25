@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="war" name="shop_pss_ssm:war">
+    <output-path>$PROJECT_DIR$/target/artifacts/shop_pss_ssm_war</output-path>
+    <root id="archive" name="shop_pss_ssm_war.war">
+      <element id="artifact" artifact-name="shop_pss_ssm:war exploded" />
+    </root>
+  </artifact>
+</component>
